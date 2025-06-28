@@ -11,7 +11,7 @@ constexpr size_t PACKET_DATA_SIZE = 512;
  */
 struct Packet
 {
-    uint16_t size; ///< Размер полезных данных
+    uint16_t size;                  ///< Размер полезных данных
     uint8_t data[PACKET_DATA_SIZE]; ///< Полезные данные
 };
 #pragma pack(pop)
