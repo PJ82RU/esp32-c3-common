@@ -9,9 +9,10 @@ constexpr size_t PACKET_DATA_SIZE = 512;
 /**
  * @brief Универсальная структура пакета для BLE/UART
  */
-struct Packet {
-    uint16_t size;                   // Размер полезных данных
-    uint8_t data[PACKET_DATA_SIZE];  // Полезные данные
+struct Packet
+{
+    uint16_t size; ///< Размер полезных данных
+    uint8_t data[PACKET_DATA_SIZE]; ///< Полезные данные
 };
 #pragma pack(pop)
 
