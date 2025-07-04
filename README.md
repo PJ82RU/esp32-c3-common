@@ -24,12 +24,12 @@ lib_deps =
 ### Пример использования
 
 ```cpp
-#include &#60;esp32_common/packet.h&#62;
+#include "esp32_common/packet.h";
 
 Packet packet;
 
 void setup() {
-packet.size = sprintf((char*)packet.data, "Hello ESP32!");
+    packet.size = sprintf((char*)packet.data, "Hello ESP32!");
 }
 
 void loop() {
@@ -44,28 +44,7 @@ void loop() {
 | size | data (512 байт)     |
 | 2    | 512                 |
 +------+---------------------+
+```
 
 ## Лицензия
 Public Domain (Unlicense)
-
-
-### 5. Пример `examples/basic_packet/src/main.cpp`
-```cpp
-#include <Arduino.h>
-#include <esp32_common/packet.h>
-
-void setup() {
-  Serial.begin(115200);
-  
-  Packet tx_pkt;
-  tx_pkt.size = snprintf((char*)tx_pkt.data, 
-                        PACKET_DATA_SIZE, 
-                        "Packet at %lu ms", 
-                        millis());
-  
-  log_d("Created packet: %.*s", tx_pkt.size, tx_pkt.data);
-}
-
-void loop() {
-  delay(1000);
-}
