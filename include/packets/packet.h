@@ -1,7 +1,8 @@
 #ifndef COMMON_PACKET_H
 #define COMMON_PACKET_H
 
-#include <Arduino.h>
+#include <cstring>
+#include <cstdint>
 
 constexpr size_t PACKET_DATA_SIZE = 512;
 

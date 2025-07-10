@@ -1,3 +1,4 @@
-.idea
 .pio
-main.*
+.idea
+src/main.cpp
+*.old
