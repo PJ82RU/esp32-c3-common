@@ -11,14 +11,8 @@
  * @brief Заголовочный файл структуры пакета для BLE/UART通信
  */
 
-/**
- * @brief Максимальный размер данных в пакете
- * @details Выбрано 512 байт как оптимальный размер:
- * - Поддерживается большинством BLE-устройств
- * - Достаточно для большинства сообщений
- * - Эффективно использует память
- */
-constexpr size_t PACKET_DATA_SIZE = 512;
+/// @brief Максимально возможный размер MTU для BLE 5.0
+constexpr uint16_t MAX_MTU = 517;
 
 #pragma pack(push, 1) // Выравнивание по 1 байту для совместимости
 
@@ -59,7 +53,7 @@ struct Packet
      * - Для текста: должен включать нуль-терминатор
      * - Для бинарных данных: только значимые байты
      */
-    std::array<uint8_t, PACKET_DATA_SIZE> data{};
+    std::array<uint8_t, MAX_MTU> buffer{};
 
     /**
      * @brief Проверка корректности пакета
@@ -68,7 +62,7 @@ struct Packet
      */
     [[nodiscard]] bool isValid() const noexcept
     {
-        return size > 0 && size <= PACKET_DATA_SIZE;
+        return size > 0 && size <= MAX_MTU;
     }
 
     /**
@@ -90,23 +84,23 @@ struct Packet
     {
         id = 0;
         size = 0;
-        data.fill(0);
+        buffer.fill(0);
     }
 
     /**
      * @brief Запись данных в пакет
-     * @param buffer Указатель на данные
+     * @param data Указатель на данные
      * @param len Длина данных
      * @return true - данные записаны
      * @return false - ошибка параметров
      */
-    bool setPayload(const uint8_t* buffer, const size_t len) noexcept
+    bool setPayload(const uint8_t* data, const size_t len) noexcept
     {
-        if (!buffer || len == 0 || len > PACKET_DATA_SIZE)
+        if (!data || len == 0 || len > MAX_MTU)
             return false;
 
         size = static_cast<uint16_t>(len);
-        std::memcpy(data.data(), buffer, len);
+        std::memcpy(buffer.data(), data, len);
         return true;
     }
 };
@@ -114,7 +108,7 @@ struct Packet
 #pragma pack(pop) // Восстановление выравнивания
 
 // Проверка размера структуры
-static_assert(sizeof(Packet) == 2 + 2 + PACKET_DATA_SIZE,
+static_assert(sizeof(Packet) == 2 + 2 + MAX_MTU,
               "Некорректный размер структуры Packet");
 
 #endif // COMMON_PACKET_H
